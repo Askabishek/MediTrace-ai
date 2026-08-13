@@ -21,6 +21,26 @@ async def transcribe_audio(
         content = await file.read()
         tmp.write(content)
         tmp_path = tmp.name
+    
     try:
         with open(tmp_path, "rb") as audio_file:
-            transcription = client.audio.transcriptions.create
+            transcription = client.audio.transcriptions.create(
+                model="whisper-large-v3",
+                file=audio_file,
+            )
+        transcribed_text = transcription.text
+        detected_lang = detect_language(transcribed_text)
+        result = medical_chat(
+            user_message=transcribed_text,
+            session_id=session_id or "voice_session",
+            language=detected_lang
+        )
+        return {
+            "transcribed_text": transcribed_text,
+            "detected_language": detected_lang,
+            "response": result["response"]
+        }
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        os.unlink(tmp_path)
