@@ -1,12 +1,16 @@
-from sentence_transformers import SentenceTransformer
-import numpy as np
+import os
+from groq import Groq
+from dotenv import load_dotenv
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def get_embeddings(texts: list):
-    embeddings = model.encode(texts, convert_to_numpy=True)
-    return embeddings.tolist()
+    response = client.embeddings.create(
+        model="bge-large-en-v1.5",  # Free on Groq
+        input=texts
+    )
+    return [data.embedding for data in response.data]
 
 def get_single_embedding(text: str):
-    embedding = model.encode([text], convert_to_numpy=True)
-    return embedding[0].tolist()
+    return get_embeddings([text])[0]
