@@ -1,1 +1,13 @@
--r backend/requirements.txt
+fastapi
+uvicorn
+groq
+chromadb
+sentence-transformers
+langdetect
+deep-translator
+pydub
+python-multipart
+pdfplumber
+sqlalchemy
+aiosqlite
+python-dotenv
