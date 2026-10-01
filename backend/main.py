@@ -23,3 +23,7 @@ def startup():
 @app.get("/")
 def root():
     return {"message": "MediTrace AI Backend Running!"}
+
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
