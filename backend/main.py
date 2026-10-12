@@ -1,29 +1,27 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import chat, voice, report
+from routers import chat, report, voice
 from database.models import create_tables
 
-app = FastAPI(title="MediTrace AI", version="1.0.0")
+app = FastAPI(title="MediTrace AI Backend")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(chat.router, prefix="/chat")
-app.include_router(voice.router, prefix="/voice")
-app.include_router(report.router, prefix="/report")
+app.include_router(chat.router, prefix="/chat", tags=["Chat"])
+app.include_router(report.router, prefix="/report", tags=["Report Analysis"])
+app.include_router(voice.router, prefix="/voice", tags=["Voice Transcription"])
 
 @app.on_event("startup")
-def startup():
+def startup_event():
     create_tables()
 
-@app.get("/")
-def root():
-    return {"message": "MediTrace AI Backend Running!"}
-
 @app.get("/health")
-def health():
+def health_check():
     return {"status": "healthy"}
