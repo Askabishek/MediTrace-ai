@@ -1,0 +1,11 @@
+{
+  "project_details": {
+    "name": "meditrace-ai"
+  },
+  "appsail": [
+    {
+      "source": ".",
+      "name": "meditrace-backend"
+    }
+  ]
+}
