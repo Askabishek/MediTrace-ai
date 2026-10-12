@@ -1,0 +1,9 @@
+{
+  "service_name": "meditrace-backend",
+  "stack": "python311",
+  "command": "sh -c 'uvicorn main:app --host 0.0.0.0 --port ${X_ZOHO_CATALYST_LISTEN_PORT}'",
+  "memory": 512,
+  "env_variables": {
+    "ENV": "production"
+  }
+}
